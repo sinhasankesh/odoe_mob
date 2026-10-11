@@ -1,0 +1,5 @@
+import React from 'react';
+import {WebView} from 'react-native-webview';
+import {ActivityIndicator} from 'react-native';
+export type EmbeddedProps={url?:string;html?:string;bootstrap?:string;onError?:()=>void;onNavigate?:(url:string)=>void};
+export default function Embedded({url,html,bootstrap,onError,onNavigate}:EmbeddedProps){return <WebView incognito={!!bootstrap} injectedJavaScriptBeforeContentLoaded={bootstrap} injectedJavaScriptBeforeContentLoadedForMainFrameOnly style={{flex:1,backgroundColor:'#071525'}} source={html?{html,baseUrl:url||'https://localhost/'}:{uri:url!}} originWhitelist={['http://*','https://*','about:*','blob:*']} onShouldStartLoadWithRequest={r=>/^(https?:|about:|blob:)/i.test(r.url)} onError={onError} onHttpError={e=>{if(e.nativeEvent.statusCode>=400)onError?.();}} onNavigationStateChange={state=>onNavigate?.(state.url)} allowsInlineMediaPlayback mediaPlaybackRequiresUserAction startInLoadingState renderLoading={()=><ActivityIndicator color="#35B9EF"/>} setSupportMultipleWindows={false}/>;}
